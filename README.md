@@ -28,4 +28,32 @@ SpecGuard AI cross-examines your **backend code**, **infrastructure configs**, a
 1. **Ingest (`ingestor.py`):** Normalizes and cleans the 3 core inputs (Code, Docs, Infra) or loads built-in demo samples.
 2. **Analyze (`analyzer.py`):** Leverages Google Gemini Flash with strict Pydantic schemas to extract structured security risks and drift metrics.
 3. **Validate (`validator.py`):** Runs deterministic safety rules to issue the final `PASS`/`BLOCK` deployment verdict.
-4. **Interface (`app.py`):** A clean, enterprise-grade Streamlit dashboard displaying security badges, diff views, and auto-patched files.
+4. **Interfaces:** `backend/api.py` exposes the FastAPI service, while `frontend/` contains the React/Vite retro-pixel dashboard.
+
+## 🧭 Local development
+
+Install backend dependencies and start the API:
+
+```powershell
+.\venv\Scripts\python.exe -m pip install -r backend\requirements.txt
+.\venv\Scripts\python.exe -m uvicorn backend.api:app --reload --port 8000
+```
+
+In another terminal, install and start the frontend:
+
+```powershell
+cd frontend
+npm install
+npm run dev
+```
+
+The legacy Streamlit dashboard is still available with `streamlit run backend/app.py`.
+
+If your terminal is already inside `backend\`, use the repository interpreter explicitly:
+
+```powershell
+..\venv\Scripts\python.exe -m uvicorn api:app --reload
+```
+
+Using `uvicorn` by itself can select a different Python environment that does not
+contain FastAPI.
